@@ -29,7 +29,7 @@ public class USBSend2 {
     
     public static void main(String args[]) {
 
-        /*
+        
 		NXTConnector conn = new NXTConnector();
 		conn.addLogListener(new NXTCommLogListener(){
                 public void logEvent(String message) {
@@ -49,7 +49,7 @@ public class USBSend2 {
 		
 		DataInputStream inDat = new DataInputStream(conn.getInputStream());
 		//DataOutputStream outDat = new DataOutputStream(conn.getOutputStream());
-		*/
+		
         
         // --------------- intial face -----------        
         int delay = 4000;
@@ -80,7 +80,7 @@ public class USBSend2 {
         while (n < CAPACITY)
 		{
 			try {
-                //x = inDat.readInt(); // blocking
+                x = inDat.readInt(); // blocking
                 Thread.sleep(2000); // fake
 
                 n = n + 1 ;
@@ -105,9 +105,9 @@ public class USBSend2 {
 	        }
             
 		}
-		/*
+		
 		try {
-			// inDat.close();
+			inDat.close();
 			//outDat.close();
 			System.out.println("Closed data streams");
 		} catch (IOException ioe) {
@@ -115,12 +115,12 @@ public class USBSend2 {
 		}
 		
 		try {
-			//conn.close();
+			conn.close();
 			System.out.println("Closed connection");
 		} catch (IOException ioe) {
 			System.err.println("IO Exception Closing connection");
 		}
-         */
+        
         // notify that bin is full
         // send email
         // change dislplay

@@ -5,6 +5,7 @@ import lejos.nxt.Button;
 import lejos.nxt.*;
 import lejos.robotics.objectdetection.*;
 
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.EOFException;
@@ -34,6 +35,7 @@ public class ObjectDetect implements FeatureListener {
 		dOut = conn.openDataOutputStream();
 		//DataInputStream dIn = conn.openDataInputStream();
 
+		LCD.drawString("Do not touch!", 0, 0);
         
 		ObjectDetect listener = new ObjectDetect();
 		UltrasonicSensor us = new UltrasonicSensor(SensorPort.S4);
@@ -46,13 +48,15 @@ public class ObjectDetect implements FeatureListener {
 	public void featureDetected(Feature feature, FeatureDetector detector) {
 		int range = (int)feature.getRangeReading().getRange();
 		//Sound.playTone(1200 - (range * 10), 100);
-		System.out.println("Range:" + range);
+		//System.out.println("Range:" + range);
         // send range to PC
         try {
-            dOut.writeInt(range);
-            dOut.flush();
-            Thread.sleep(1000);
-
+			if (range < 23)
+			{
+				dOut.writeInt(range);
+				dOut.flush();
+				Thread.sleep(1000);
+			}
         } catch (Exception e) {
             System.err.println("IO Exception sending range");
             System.out.println("Exception ioe" );

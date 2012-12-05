@@ -1,7 +1,7 @@
-import java.util.Timer;
-import java.util.TimerTask;
-
 //package org.lejos.pcsample.usbsend;
+import java.text.DateFormat;
+import java.util.Calendar;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -25,12 +25,10 @@ import lejos.pc.comm.NXTConnector;
 public class USBSend {
 
     public static long SMILE_TIME = 3000;
-	public static int CAPACITY = 50;
+	public static int CAPACITY = 50000;
     public static FullScreen f1 = new FullScreen("img/flat.png");
     
     public static void main(String args[]) {
-
-        /*
 		NXTConnector conn = new NXTConnector();
 		conn.addLogListener(new NXTCommLogListener(){
                 public void logEvent(String message) {
@@ -50,10 +48,9 @@ public class USBSend {
 		
 		DataInputStream inDat = new DataInputStream(conn.getInputStream());
 		//DataOutputStream outDat = new DataOutputStream(conn.getOutputStream());
-		*/
         
         // --------------- intial face -----------        
-        Timer timer = new Timer();
+        //Timer timer = new Timer();
         try{
             f1.setImage("img/smile.jpg");
             Playme.playClip("wav/nintendo1.wav");
@@ -64,38 +61,38 @@ public class USBSend {
         
         // USB loop start
 		int x=0,n=0,s = 0; // number of cans collected
-        Reminder r = new Reminder(4, f1);
+        //Reminder r = new Reminder(4, f1);
         while (n < CAPACITY)
-		{
-			try {
-                //x = inDat.readInt(); // blocking
-                Thread.sleep(7000); // fake
-
-                n = n + 1 ;
-                System.out.println( n + " Received " + x);
-                f1.setImage("img/smile.jpg");
-                r.timer.restart()
-                Playme.playClip("wav/nintendo1.wav");
-                Thread.sleep(1000);
+	  	{
+		    try {
+						f1.setImage("img/flat.png");
+						x = inDat.readInt(); // blocking
+		                n = n + 1 ;
+                		f1.setImage("img/smile.jpg");
+                		Playme.playClip("wav/nintendo1.wav");
+						Calendar cal = Calendar.getInstance();
+						DateFormat df = DateFormat.getDateTimeInstance(DateFormat.FULL,
+						DateFormat.MEDIUM);
+						System.out.println( );
+						System.out.println(n + "," + df.format(cal.getTime()));
+						Thread.sleep(1000);
                 
-                if ( n%10 == 9){  //every ten cans
-                    f1.setImage("img/milestone.png");
-                    Playme.playClip("wav/" + s%10 +".wav");
-                    f1.setImage("img/w.png");
-                    Thread.sleep(1000);
-                    s = s + 1 ;
-
-                }
+	                if ( n%10 == 9){  //every ten cans
+        	            f1.setImage("img/milestone.png");
+                	    Playme.playClip("wav/" + s%10 +".wav");
+                    	    f1.setImage("img/w.png");
+                            Thread.sleep(1000);
+                            s = s + 1 ;
+	                }
                 
-	        } catch (Exception e) {
-                System.err.println("IO Exception reading reply");
-                break;
+	            } catch (Exception e) {
+                        System.err.println("IO Exception reading reply");
+                        break;
 	        }
             
 		}
-		/*
 		try {
-			// inDat.close();
+			  inDat.close();
 			//outDat.close();
 			System.out.println("Closed data streams");
 		} catch (IOException ioe) {
@@ -103,12 +100,11 @@ public class USBSend {
 		}
 		
 		try {
-			//conn.close();
+			conn.close();
 			System.out.println("Closed connection");
 		} catch (IOException ioe) {
 			System.err.println("IO Exception Closing connection");
 		}
-         */
         // notify that bin is full
         // send email
         // change dislplay
